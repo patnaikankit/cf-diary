@@ -11,7 +11,6 @@ function App() {
     <BrowserRouter basename={process.env.PUBLIC_URL}>
         <Routes>
           <Route exact path="/" element={<Home/>}/>
-          {/* <Route exact path="/main" element={<Main/>}/> */}
         </Routes>
       </BrowserRouter>
     </>
