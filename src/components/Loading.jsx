@@ -1,11 +1,11 @@
 import '../App.css';
 import '../index.css'
 
-const Loading = ()=>{
+const Loading = () => {
     return(
-    <div className='loading'>
+        <div className='loading'>
 
-    </div>
+        </div>
     );
 }
 export default Loading;

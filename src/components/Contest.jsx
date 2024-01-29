@@ -28,7 +28,7 @@ const Profile = (props) => {
           console.log(obj);
         })
         .catch((err) => {
-          alert("Could not fetch Codeforces data!");
+          alert("Could not fetch data!");
         });
     }
   }, []);

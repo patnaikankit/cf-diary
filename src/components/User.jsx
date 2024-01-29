@@ -4,12 +4,12 @@ import Profile from "./Profile";
 
 
 function User(props) {
-    const [f,setF]=useState(0);
+    const [timer, setTimer] = useState(0);
     setTimeout(() => {
-        setF(1);
+        setTimer(1);
     }, 1500);
   return <>
-    {f===1?<Profile username = {props.username}/>:<Loading/>}
+    { timer === 1 ? <Profile username = {props.username} /> : <Loading/> }
   </>;
 }
 

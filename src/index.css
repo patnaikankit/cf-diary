@@ -13,14 +13,18 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+
 .loading{
-  height:200px;
-  width:200px;
+  height:40px;
+  width:40px;
   border-radius: 50%;
   border:10px solid transparent;
-  border-top:10px solid red;
+  border-top:10px solid rgb(0, 0, 0);
   animation:round 1s infinite;
+  margin: auto;
+  margin-top: 40vh;
 }
+
 .user-container{
   width:95vw;
   display:flex;
@@ -28,32 +32,37 @@ code {
   height:300px;
   margin-bottom: 4%;
 }
+
 .dp{
   width:50%;
   text-align: right;
 }
+
 .stats{
   width:50%;
 }
+
 .dp img{
   height:230px;
   width:230px;
   border-radius: 2%;
 }
+
 .dp{
   margin-right: 5%;
 }
 
-
 .title{
   text-align: center;
   margin-top:2%;
-  color:blueviolet;
+  color:rgb(0, 0, 0);
 }
+
 .stats table{
  width:80%;
  font-weight:bold;
 }
+
 td{
   padding:5px;
 }
@@ -65,12 +74,14 @@ td{
   justify-content: center;
   padding-top:10%;
 }
+
 .home-form input{
   padding:10px;
   width:250px;
   border-radius:5px;
   border:2px solid blue;
 }
+
 .home-form button{
   margin-left:20px;
   width:100px;
@@ -92,6 +103,7 @@ td{
     box-shadow: 1px 1px 2px 2px green;
     transform:translateY(-2px); 
 }
+
 .home-form input:focus{
   box-shadow: 1px 1px 2px 2px rgb(0, 4, 128);
 }
