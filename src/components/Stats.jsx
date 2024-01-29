@@ -38,7 +38,7 @@ const colors = [
 
 const Stats = (props) => {
   const [cf, setCf] = useState(new Map());
-  const [last, setLast] = useState(0);
+  // const [last, setLast] = useState(0);
   const [ratingdata, setRatingData] = useState([]);
 
   useEffect(() => {
@@ -103,7 +103,7 @@ const Stats = (props) => {
             "</h6>";
 
           rd.push([i, contest.newRating, str]);
-          setLast(contest.contestId);
+          // setLast(contest.contestId);
         });
 
         setRatingData(rd);
