@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { Chart } from "react-google-charts";
-import Loading from "./Loading";
+
 const colors = [
   "#ccc",
   "#ccc",
@@ -36,7 +36,6 @@ const colors = [
 
 const Stats = (props) => {
   const [cf, setCf] = useState(new Map());
-  const [rating, setRating] = useState(new Map());
   const [last, setLast] = useState(0);
   const [ratingdata, setRatingData] = useState([]);
   useEffect(() => {
@@ -46,16 +45,16 @@ const Stats = (props) => {
     fetch(problem_url)
       .then((res) => res.json())
       .then((res) => {
-        let re = res.result;
+        let response = res.result;
         let map = new Map();
         let rating = new Map();
         for (let i = 800; i <= 4000; i++) {
           rating.set(i, 0);
         }
-        let cfc = re.filter((value) => {
+        let cfc = response.filter((value) => {
           let flag = false;
 
-          if (value.verdict === "OK" && !map.has(value.problem.name)) {
+          if(value.verdict === "OK" && !map.has(value.problem.name)){
             flag = true;
             let cur = rating.get(value.problem.rating);
             rating.set(value.problem.rating, cur + 1);
@@ -66,19 +65,16 @@ const Stats = (props) => {
         setCf(rating);
       })
       .catch((err) => {
-        // alert("Could not fetch Codeforces data!");
+        alert("Could not fetch Codeforces data!");
       });
 
-    var rating_url =
-      "https://codeforces.com/api/user.rating?handle=" + props.username;
+    var rating_url = "https://codeforces.com/api/user.rating?handle=" + props.username;
 
     fetch(rating_url)
       .then((res) => res.json())
       .then((res) => {
-        let re = res.result;
-        console.log(re.length);
+        let response = res.result;
 
-        let map = new Map();
         let rd = [
           [
             "Contest",
@@ -86,27 +82,25 @@ const Stats = (props) => {
             { role: "tooltip", type: "string", p: { html: true } },
           ],
         ];
-        for (let i = 0; i < re.length; i++) {
-          // console.log(i,re[i].contestId);
-          // console.log(re[i].newRating);
+        for(let i = 0; i < response.length; i++){
           const str =
             "<h6>Contest Number: " +
             i +
             "</h6><h6>Contest Name: " +
-            re[i].contestName +
+            response[i].contestName +
             "</h6><h6>Delta: " +
-            (re[i].newRating - re[i].oldRating) +
+            (response[i].newRating - response[i].oldRating) +
             "</h6><h6>New Rating: " +
-            re[i].newRating +
+            response[i].newRating +
             "</h6>" +
             "<h6>Rank: " +
-            re[i].rank +
+            response[i].rank +
             "</h6>" +
             "<h6>Time: " +
-            Date(re[i].ratingUpdateTimeSecondsnew * 1000).toLocaleString() +
+            Date(response[i].ratingUpdateTimeSecondsnew * 1000).toLocaleString() +
             "</h6>";
-          rd.push([i, re[i].newRating, str]);
-          setLast(re[i].contestId);
+          rd.push([i, response[i].newRating, str]);
+          setLast(response[i].contestId);
         }
         setRatingData(rd);
       })
@@ -118,9 +112,11 @@ const Stats = (props) => {
   const cfdata = [["Rating", "Count", { role: "style" }]];
 
   var cfTotal = 0;
-  for (let i = 800; i <= 3500; i += 100) {
+  for(let i = 800; i <= 3500; i += 100){
     cfTotal += cf.get(i);
-    if (cf.get(i) > 0) cfdata.push([i, cf.get(i), colors[(i - 800) / 100]]);
+    if(cf.get(i) > 0){
+      cfdata.push([i, cf.get(i), colors[(i - 800) / 100]]);
+    } 
   }
 
   const options = {
@@ -148,4 +144,6 @@ const Stats = (props) => {
     </div>
   );
 };
+
+
 export default Stats;

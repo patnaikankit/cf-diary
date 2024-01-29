@@ -15,14 +15,14 @@ code {
 }
 
 .loading{
-  height:40px;
-  width:40px;
+  height:30px;
+  width:30px;
   border-radius: 50%;
   border:10px solid transparent;
   border-top:10px solid rgb(0, 0, 0);
   animation:round 1s infinite;
   margin: auto;
-  margin-top: 40vh;
+  margin-top: 30vh;
 }
 
 .user-container{

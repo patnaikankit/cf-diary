@@ -1,5 +1,8 @@
+// the actual data is being fetched here 
 import { useEffect, useState } from "react";
 import Stats from "./Stats";
+
+
 const colors = [
   "#ccc",
   "#ccc",
@@ -39,6 +42,7 @@ const colors = [
   "#aa0000",
   "#aa0000",
 ];
+
 
 const Profile = (props) => {
   const [data, setData] = useState({});

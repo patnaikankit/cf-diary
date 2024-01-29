@@ -1,3 +1,4 @@
+// to introduce a small delay so while the data is fetched
 import { useState } from "react";
 import Loading from "./Loading";
 import Profile from "./Profile";
