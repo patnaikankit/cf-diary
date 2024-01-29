@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { Chart } from "react-google-charts";
 
+
 const colors = [
   "#ccc",
   "#ccc",
@@ -34,89 +35,93 @@ const colors = [
   "#aa0000",
 ];
 
+
 const Stats = (props) => {
   const [cf, setCf] = useState(new Map());
   const [last, setLast] = useState(0);
   const [ratingdata, setRatingData] = useState([]);
+
   useEffect(() => {
-    var problem_url =
+    const problemUrl =
       "https://codeforces.com/api/user.status?handle=" + props.username;
 
-    fetch(problem_url)
+    fetch(problemUrl)
       .then((res) => res.json())
       .then((res) => {
         let response = res.result;
         let map = new Map();
         let rating = new Map();
+
         for (let i = 800; i <= 4000; i++) {
           rating.set(i, 0);
         }
-        let cfc = response.filter((value) => {
+
+        response.forEach((value) => {
           let flag = false;
 
-          if(value.verdict === "OK" && !map.has(value.problem.name)){
+          if (value.verdict === "OK" && !map.has(value.problem.name)) {
             flag = true;
             let cur = rating.get(value.problem.rating);
             rating.set(value.problem.rating, cur + 1);
             map.set(value.problem.name, true);
           }
+
           return flag;
         });
+
         setCf(rating);
       })
       .catch((err) => {
-        alert("Could not fetch Codeforces data!");
+        // alert("Could not fetch Codeforces data!");
       });
 
-    var rating_url = "https://codeforces.com/api/user.rating?handle=" + props.username;
+    const ratingUrl = "https://codeforces.com/api/user.rating?handle=" + props.username;
 
-    fetch(rating_url)
+    fetch(ratingUrl)
       .then((res) => res.json())
       .then((res) => {
         let response = res.result;
 
-        let rd = [
-          [
-            "Contest",
-            "Rating",
-            { role: "tooltip", type: "string", p: { html: true } },
-          ],
-        ];
-        for(let i = 0; i < response.length; i++){
+        let rd = [["Contest", "Rating", { role: "tooltip", type: "string", p: { html: true } }]];
+        
+        response.forEach((contest, i) => {
           const str =
             "<h6>Contest Number: " +
             i +
             "</h6><h6>Contest Name: " +
-            response[i].contestName +
+            contest.contestName +
             "</h6><h6>Delta: " +
-            (response[i].newRating - response[i].oldRating) +
+            (contest.newRating - contest.oldRating) +
             "</h6><h6>New Rating: " +
-            response[i].newRating +
+            contest.newRating +
             "</h6>" +
             "<h6>Rank: " +
-            response[i].rank +
+            contest.rank +
             "</h6>" +
             "<h6>Time: " +
-            Date(response[i].ratingUpdateTimeSecondsnew * 1000).toLocaleString() +
+            new Date(contest.ratingUpdateTimeSeconds * 1000).toLocaleString() +
             "</h6>";
-          rd.push([i, response[i].newRating, str]);
-          setLast(response[i].contestId);
-        }
+
+          rd.push([i, contest.newRating, str]);
+          setLast(contest.contestId);
+        });
+
         setRatingData(rd);
       })
       .catch((err) => {
         alert("Could not fetch Codeforces data!");
       });
-  }, []);
+  }, [props.username, cf]);
 
   const cfdata = [["Rating", "Count", { role: "style" }]];
 
-  var cfTotal = 0;
-  for(let i = 800; i <= 3500; i += 100){
-    cfTotal += cf.get(i);
-    if(cf.get(i) > 0){
-      cfdata.push([i, cf.get(i), colors[(i - 800) / 100]]);
-    } 
+  let cfTotal = 0;
+  for (let i = 800; i <= 3500; i += 100) {
+    const count = cf.get(i) || 0; // Ensure count is defined
+    cfTotal += count;
+    if (count > 0) {
+      cfdata.push([i, count, colors[(i - 800) / 100]]);
+    }
   }
 
   const options = {
@@ -124,15 +129,11 @@ const Stats = (props) => {
     pointSize: 5,
     tooltip: { isHtml: true },
   };
+
   return (
     <div className="charts">
       <h4>Total Problems Solved: {cfTotal}</h4>
-      <Chart
-        chartType="ColumnChart"
-        width="auto"
-        height="600px"
-        data={cfdata}
-      />
+      <Chart chartType="ColumnChart" width="auto" height="600px" data={cfdata} />
       <h4>Rating Graph</h4>
       <Chart
         chartType="LineChart"
@@ -144,6 +145,5 @@ const Stats = (props) => {
     </div>
   );
 };
-
 
 export default Stats;

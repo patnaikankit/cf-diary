@@ -1,7 +1,5 @@
-// the actual data is being fetched here 
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import Stats from "./Stats";
-
 
 const colors = [
   "#ccc",
@@ -43,46 +41,42 @@ const colors = [
   "#aa0000",
 ];
 
-
 const Profile = (props) => {
   const [data, setData] = useState({});
 
   useEffect(() => {
-    var url = "https://codeforces.com/api/user.info?handles=" + props.username;
+    const url = "https://codeforces.com/api/user.info?handles=" + props.username;
 
-    {
-      fetch(url)
-        .then((res) => res.json())
-        .then((res) => {
-          const val = res.result[0];
-          const obj = {
-            dp: val.avatar,
-            city: val.city,
-            contribution: val.contribution,
-            country: val.country,
-            friendOfCount: val.friendOfCount,
-            maxRank: val.maxRank,
-            maxRating: val.maxRating,
-            organization: val.organization,
-            rank: val.rank,
-            rating: val.rating,
-            titlePhoto: val.titlePhoto,
-          };
-          setData(obj);
-          console.log(obj);
-        })
-        .catch((err) => {
-          alert("Could not fetch Codeforces data!");
-        });
-    }
-  }, []);
+    fetch(url)
+      .then((res) => res.json())
+      .then((res) => {
+        const val = res.result[0];
+        const obj = {
+          dp: val.avatar,
+          city: val.city,
+          contribution: val.contribution,
+          country: val.country,
+          friendOfCount: val.friendOfCount,
+          maxRank: val.maxRank,
+          maxRating: val.maxRating,
+          organization: val.organization,
+          rank: val.rank,
+          rating: val.rating,
+          titlePhoto: val.titlePhoto,
+        };
+        setData(obj);
+        console.log(obj);
+      })
+      .catch((err) => {
+        alert("Could not fetch Codeforces data!");
+      });
+  }, [props.username]);
 
+  const getRatingColor = (rating) => {
+    const idx = Math.floor((rating - 800) / 100);
+    return { color: colors[idx] };
+  };
 
-  
-  let idx = Math.floor((data.rating-800)/100);
-  let idx1 = Math.floor((data.maxRating-800)/100);
-  const style = { "color": colors[idx] };
-  const mstyle = { "color": colors[idx1] };
   return (
     <>
       <div className="title">
@@ -97,23 +91,23 @@ const Profile = (props) => {
             <tbody>
               <tr>
                 <td>Rating: </td>
-                <td style={style}>{data.rating}</td>
+                <td style={getRatingColor(data.rating)}>{data.rating}</td>
               </tr>
               <tr>
                 <td>Rank: </td>
-                <td style={style}>{data.rank}</td>
+                <td style={getRatingColor(data.rank)}>{data.rank}</td>
               </tr>
               <tr>
                 <td>Max Rating: </td>
-                <td style={mstyle}>{data.maxRating}</td>
+                <td style={getRatingColor(data.maxRating)}>{data.maxRating}</td>
               </tr>
               <tr>
                 <td>Max Rank: </td>
-                <td style={mstyle}>{data.maxRank}</td>
+                <td style={getRatingColor(data.maxRank)}>{data.maxRank}</td>
               </tr>
               <tr>
                 <td>Contribution: </td>
-                <td style={{"color":"green"}}>{data.contribution}</td>
+                <td style={{ color: "green" }}>{data.contribution}</td>
               </tr>
               <tr>
                 <td>Friend Of: </td>
@@ -131,4 +125,5 @@ const Profile = (props) => {
     </>
   );
 };
+
 export default Profile;
